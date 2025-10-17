@@ -294,6 +294,15 @@ where
     }
 }
 
+pub fn run_bench(name: &BenchName, benchfn: BenchFn, seed: Option<u64>) -> MonitorMsg {
+    let mut cb = CtBencher::new();
+
+    let seed = seed.unwrap_or_else(CtBencher::rand_seed);
+    cb.seed_with(seed);
+
+    run_bench_with_bencher(name, benchfn, &mut cb)
+}
+
 fn run_bench_with_bencher(name: &BenchName, benchfn: BenchFn, cb: &mut CtBencher) -> MonitorMsg {
     let summ = cb.go(benchfn);
 
